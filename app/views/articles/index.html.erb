@@ -1,0 +1,31 @@
+<h1>Listing articles</h1>
+<% if user_signed_in? %>
+  <%= link_to 'New article', new_article_path, class: "btn btn-success" %>
+<% end %>
+<table class="table">
+  <tr>
+    <thead>
+    <th scope="col">Title</th>
+    <th scope="col">Text</th>
+    <th scope="col"></th>
+    <% if user_signed_in? %>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    <% end %>
+    </tr>
+    </thead>
+
+    <% @articles.each do |article| %>
+      <% if can? :read, article %>
+      <tr>
+        <td><%= article.title %></td>
+        <td><%= article.text %></td>
+        <td><%= link_to 'Show', article_path(article), class: "btn btn-primary" %></td>
+        <% if can? :manage, article %>
+          <td><%= link_to 'Edit', edit_article_path(article), class: 'btn btn-warning' %></td>
+          <td><%= link_to 'Destroy', article_path(article), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
